@@ -17,7 +17,7 @@
     "hypercore": "^10.17.0"
   },
   "bin": {
-    "overbee": "index.js"
+    "overbee": "bin.js"
   },
   "repository": {
     "type": "git",
