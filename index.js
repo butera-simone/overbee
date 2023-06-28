@@ -1,14 +1,9 @@
-#!/usr/bin/env node
-
 const { Node } = require('./node_modules/hyperbee/lib/messages')
 const Hypercore = require('hypercore')
 const path = require('path')
 
-let corePath = process.argv[2] || process.cwd()
-
-corePath = path.resolve(corePath)
-
-async function main () {
+module.exports = async function overbee (corePath) {
+  corePath = path.resolve(corePath)
   const core = new Hypercore(corePath, { createIfMissing: false })
   await core.ready().catch(() => {
     console.log(`Found no Hypercore at ${corePath}`)
@@ -31,14 +26,12 @@ async function main () {
   const valuePerc = percentage(totalValues, totalSize)
   const rest = totalSize - (totalKeys + totalValues)
   const restPerc = percentage(rest, totalSize)
-  console.log(`Total size of the HyperBee is ${totalSize} kb`)
-  console.log(`Keys are ${keysPerc} %`)
-  console.log(`Values are ${valuePerc} %`)
-  console.log(`Everything else is ${restPerc} %`)
+
+  return {
+    totalSize, keysPerc, valuePerc, restPerc
+  }
 }
 
 function percentage (part, whole) {
   return ((part / whole) * 100).toFixed(2)
 }
-
-main()
